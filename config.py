@@ -7,15 +7,15 @@ def getConfig():
     parser.add_argument('--data_path', type=str, default='data/')
 
     # Model parameter settings
-    parser.add_argument('--arch', type=str, default='4', help='Backbone Architecture')
+    parser.add_argument('--arch', type=str, default='6', help='Backbone Architecture')
     parser.add_argument('--margin', type=float, default=0.1, help='additive angular margin')
     parser.add_argument('--scale', type=int, default=8, help='normalized cos_theta re-scaler')
     parser.add_argument('--model_name', type=str, default='resnest50d_4s2x40d', help='vit model name')
     parser.add_argument('--model', type=str, default='efficientnet', help='model use')
 
     # Training parameter settings
-    parser.add_argument('--img_size', type=int, default=448)
-    parser.add_argument('--batch_size', type=int, default=24)
+    parser.add_argument('--img_size', type=int, default=576)
+    parser.add_argument('--batch_size', type=int, default=48)
     parser.add_argument('--epochs', type=int, default=100)
     parser.add_argument('--lr', type=float, default=5e-5)
     parser.add_argument('--optimizer', type=str, default='Adam')
