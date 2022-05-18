@@ -15,10 +15,13 @@ Please refer to [ensemble.py](https://github.com/Karel911/MVtec_AD-anomaly-detec
 
 
 ## Blending strategy
-* Baseline1 (LB 0.896): Efficient-B6 (66) & Efficient-B6 (85, ugmentation including rotation of 45 degree)  
-* soft_ensemble (LB 0.899): Efficient-B6 (66) & Efficient-B6 (85, rotate 45) & 
-            Efficient-B6 (39, arcFace loss) & Efficient-B6 (92, arcFace & label smoothing loss  
-* Baseline2 (LB 0.894): Efficient-B7 (146, label smoothing loss)
+* Baseline1 (LB 0.896): EfficientNet-B6 (66) & EfficientNet-B6 (85, ugmentation including rotation of 45 degree)  
+* soft_ensemble (LB 0.899): EfficientNet-B6 (66) & EfficientNet-B6 (85, rotate 45) & 
+            EfficientNet-B6 (39, arcFace loss) & EfficientNet-B6 (92, arcFace & label smoothing loss  
+* Baseline2 (LB 0.894): EfficientNet-B7 (146, label smoothing loss)
+* One-class based self-supervised learning model: EfficientNet-B6 (87, excluding arcFace will be better)
+* We drop the filp augmentations for some cases (e.g., metal_nut) on the one-class based SSL 
+
 
 ----------------
 ### HARD ENSEMBLE WITH HYPOTHESIS 1
