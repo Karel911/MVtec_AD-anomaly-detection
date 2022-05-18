@@ -8,7 +8,7 @@ Briefly, the task is to classify an extremely imbalanced images into 88 classes
 in which the label is composed of class-state pairs.  
 To solve this problem, we used Efficientnet and Resnext as a backbone with different training methods (e.g. one-class self-supervised learning, arcFace loss, and  label smoothing).  
 We also blended the model weights and prediction results based on the validation results and hypothesis.  
-Please refer to ensemble.py to see how we blended the model weights and prediction results.  
+Please refer to [ensemble.py](https://github.com/Karel911/MVtec_AD-anomaly-detection/blob/main/ensemble.py) to see how we blended the model weights and prediction results.  
 
 ## Used Models
 The models we used to make the best prediction are as follows:
