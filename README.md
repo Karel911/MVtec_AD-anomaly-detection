@@ -10,6 +10,66 @@ To solve this problem, we used Efficientnet and Resnext as a backbone with diffe
 We also blended the model weights and prediction results based on the validation results and hypothesis.  
 Please refer to [ensemble.py](https://github.com/Karel911/MVtec_AD-anomaly-detection/blob/main/ensemble.py) to see how we blended the model weights and prediction results.  
 
+
+### Note that we were not able to reproduce our best private score (0.9270) perfectly, but got the close private score (0.9264).  
+
+
+## Blending strategy
+* Baseline1 (LB 0.896): Efficient-B6 (66) & Efficient-B6 (85, ugmentation including rotation of 45 degree)  
+* soft_ensemble (LB 0.899): Efficient-B6 (66) & Efficient-B6 (85, rotate 45) & 
+            Efficient-B6 (39, arcFace loss) & Efficient-B6 (92, arcFace & label smoothing loss  
+* Baseline2 (LB 0.894): Efficient-B7 (146, label smoothing loss)
+
+----------------
+### HARD ENSEMBLE WITH HYPOTHESIS 1
+
+Observation 1-1: On the overall validation results, the anomaly class-combined was relatively hard to predict.  
+Observation 1-2: Baseline1 has relatively better performance for the normal and anomaly-combined on the validation results.  
+
+Hypothesis 1: Trust the results from the baseline1 and blend the new perspective from the soft_ensemble result 
+              except for both normal and anomaly-combined.
+
+Result: LB 0.902  
+          
+Priority 1: Trust a new perspective for a anomaly class except for the combined class.  
+Priority 2: Trust normal class and anomaly class-combined from the baseline1.
+
+-----------------
+### HARD ENSEMBLE WITH HYPOTHESIS 2
+
+Observation 2-1: The baseline2 showed better performance for the classes tile, carpet, and zipper on the validation 
+                 compared to the baseline1.  
+Observation 2-2: The baseline2 exhibited a different view for the anomaly class-combined on the validation
+                 compared to the baseline1.  
+              
+Hypothesis 2-1: Trust the new perspective from the baseline2 results including the classes tile, carpet, and zipper.  
+Hypothesis 2-2: Trust the new perspective for the anomaly class-combined from the baseline2 results.  
+
+Result: LB 0.9099
+
+Priority 1: Trust a new perspective for the anomaly class-combined (modified).  
+Priority 2: Trust a new perspective for anomaly classes tile, carpet, and zipper from the baseline2.  
+Priority 3: Trust normal and anomaly class-combined from the baseline1.
+
+----------------
+
+### HARD ENSEMBLE WITH HYPOTHESIS 3
+
+Hypothesis 3: One-class based self supervised learning model has a different view compared with the baseline1 and 2.  
+
+The combination of labels, 'cable', 'grid', 'metal_nut', 'pill', and 'wood', showed the best performance.  
+
+Result: LB-Private 0.926
+
+Priority 1: Trust a new perspective for the anomaly class-combined.  
+Priority 2: Trust a new perspective for anomaly classes tile, carpet, and zipper from the baseline1.  
+Priority 3: Trust a new perspective for anomaly classes cable, grid, metal_nut, pill, and wood 
+            from the one-class based self supervised learning model.  
+Priority 4: Trust normal class from the baseline1 (modified).  
+
+----------------
+
+
 ## Used Models
 The models we used to make the best prediction are as follows:
 * features_66: EfficientNet-B6, 10-Fold, baseline, inference img_size=640, inference batch_size=64
@@ -75,7 +135,3 @@ python main.py train --train_method one_class --arcloss arcface
 * arcloss: ArcFace usage (default: False)
 * fold: number of folds (different number of folds other than 5 or 10 is not available due to the fixed index)
 * multi_gpu: multi-gpu learning options
-
-
-
-
